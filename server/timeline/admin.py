@@ -1,7 +1,16 @@
 from server.timeline.models import Event 
 from django.contrib import admin 
+from django import forms
+
+
+class EventModelForm( forms.ModelForm ):
+    desc = forms.CharField( widget=forms.Textarea )
+    class Meta:
+        model = Event
+
  
 class EventAdmin(admin.ModelAdmin):
+    form = EventModelForm
     fields = [ 'title', 'dur', 'start', 'end', 'desc']
     list_display = ('dur', 'start', 'end', 'title')
     list_filter = ['start', 'end', 'dur']
