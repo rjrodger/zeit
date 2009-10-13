@@ -11,7 +11,7 @@ class TimelineHandler(AnonymousBaseHandler):
    def read(self, request):
        events = []
        for event in Event.objects.all():
-           events.append( {"start":event.start.strftime("%a %b %d %Y %H:%M:%S GMT-0000"), 
+           events.append( {"start":event.start.strftime("%a %b %d %Y %H:%M:%S GMT-0000"), "description":event.desc,
                            "end":event.end.strftime("%a %b %d %Y %H:%M:%S GMT-0000"), "durationEvent":event.dur, "title":event.title} )
 
        outstr = simplejson.dumps( {"events":events} )
