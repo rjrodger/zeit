@@ -1,0 +1,47 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+ <html>
+   <head>
+     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+     <script>
+Timeline_ajax_url="js/timeline_ajax/simile-ajax-api.js";
+Timeline_urlPrefix='js/timeline_js/';       
+Timeline_parameters='bundle=true';
+     </script>
+     <script src="js/timeline_js/timeline-api.js?bundle=true" type="text/javascript"></script>
+   </head>
+   <body onload="onLoad();" onresize="onResize();">
+
+<div id="my-timeline" style="height: 150px; border: 1px solid #aaa"></div>
+
+
+<script>
+function onLoad() {
+   var eventSource = new Timeline.DefaultEventSource();
+   var bandInfos = [
+     Timeline.createBandInfo({
+         eventSource:    eventSource,
+         date:           "Oct 13 2009 00:00:00 GMT",
+         width:          "70%", 
+         intervalUnit:   Timeline.DateTime.MONTH, 
+         intervalPixels: 100
+     }),
+     Timeline.createBandInfo({
+         eventSource:    eventSource,
+         date:           "Oct 13 2009 00:00:00 GMT",
+         width:          "30%", 
+         intervalUnit:   Timeline.DateTime.YEAR, 
+         intervalPixels: 200,
+         overview:       true
+     })
+   ];
+   bandInfos[1].syncWith = 0;
+   bandInfos[1].highlight = true;
+   
+   tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
+   Timeline.loadJSON("timeline/api/timeline.json", function(json, url) { eventSource.loadJSON(json, url); });
+ }
+</script>
+
+   </body>
+ </html>
+
