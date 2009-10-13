@@ -7,6 +7,7 @@ class Event(models.Model):
     start = models.DateTimeField()
     end   = models.DateTimeField()
     dur   = models.BooleanField()
+    desc  = models.CharField(max_length=2222)
 
     ordering = ['-start']
 
