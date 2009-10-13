@@ -8,38 +8,86 @@ Timeline_urlPrefix='js/timeline_js/';
 Timeline_parameters='bundle=true';
      </script>
      <script src="js/timeline_js/timeline-api.js?bundle=true" type="text/javascript"></script>
+     <style>
+.timeline-date-label {
+  font-size: 0.8em; 
+}
+
+
+     </style>
    </head>
    <body onload="onLoad();" onresize="onResize();">
 
-<div id="my-timeline" style="height: 150px; border: 1px solid #aaa"></div>
+<div id="my-timeline" style="height: 600px; border: 1px solid #aaa"></div>
 
 
 <script>
+var DAYMILLIS = 1000*60*60*24;
+var now = new Date();
+var weekendfirst = midnight( new Date( now.getTime()-(DAYMILLIS*90)) );
+var weekendlast  = midnight( new Date( now.getTime()+(DAYMILLIS*90)) );
+
+var daydecorators = [];
+
+for( var d = weekendfirst; d < weekendlast; d += DAYMILLIS ) {
+  dds = new Date(d);
+  if( 6 == dds.getDay() ) {
+    dde = new Date(dds.getTime()+(2*DAYMILLIS));
+    daydecorators.push(
+      new Timeline.SpanHighlightDecorator({color:"#33ff33",endDate:dde,opacity:20,startDate:dds})
+    );
+  }
+}
+
+
 function onLoad() {
    var eventSource = new Timeline.DefaultEventSource();
    var bandInfos = [
      Timeline.createBandInfo({
          eventSource:    eventSource,
-         date:           "Oct 13 2009 00:00:00 GMT",
-         width:          "70%", 
-         intervalUnit:   Timeline.DateTime.MONTH, 
-         intervalPixels: 100
+         date:           ''+now,
+         width:          "60%", 
+         intervalUnit:   Timeline.DateTime.DAY, 
+         intervalPixels: 40,
      }),
      Timeline.createBandInfo({
          eventSource:    eventSource,
-         date:           "Oct 13 2009 00:00:00 GMT",
-         width:          "30%", 
-         intervalUnit:   Timeline.DateTime.YEAR, 
-         intervalPixels: 200,
+         date:           ''+now,
+         width:          "20%", 
+         intervalUnit:   Timeline.DateTime.WEEK, 
+         intervalPixels: 100,
+         overview:       true
+     }),
+     Timeline.createBandInfo({
+         eventSource:    eventSource,
+         date:           ''+now,
+         width:          "20%", 
+         intervalUnit:   Timeline.DateTime.MONTH, 
+         intervalPixels: 100,
          overview:       true
      })
    ];
+
+   bandInfos[0].decorators = daydecorators;
+
    bandInfos[1].syncWith = 0;
    bandInfos[1].highlight = true;
+
+   bandInfos[2].syncWith = 0;
+   bandInfos[2].highlight = true;
    
    tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
    Timeline.loadJSON("timeline/api/timeline.json", function(json, url) { eventSource.loadJSON(json, url); });
  }
+
+
+function midnight( d ) {
+  d.setHours(1);
+  d.setMinutes(0);
+  d.setSeconds(0);
+  d.setMilliseconds(0);
+  return d.getTime();
+}
 </script>
 
    </body>

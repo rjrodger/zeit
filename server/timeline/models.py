@@ -7,4 +7,9 @@ class Event(models.Model):
     start = models.DateTimeField()
     end   = models.DateTimeField()
     dur   = models.BooleanField()
+
+    ordering = ['-start']
+
+    def __unicode__(self):
+        return str(self.start) + ' ' + self.title
     
