@@ -13,7 +13,6 @@ Timeline_parameters='bundle=true';
   font-size: 0.8em; 
 }
 
-
      </style>
    </head>
    <body onload="onLoad();" onresize="onResize();">
@@ -39,6 +38,17 @@ for( var d = weekendfirst; d < weekendlast; d += DAYMILLIS ) {
   }
 }
 
+var today_start = new Date( midnight(now) );
+var today_end   = new Date( today_start.getTime()+DAYMILLIS );
+
+daydecorators.push(
+      new Timeline.SpanHighlightDecorator({color:"#ff3333",endDate:today_end,opacity:20,startDate:today_start})
+);
+
+
+var maintheme = Timeline.ClassicTheme.create();
+maintheme.event.tape.height = 20;
+
 
 function onLoad() {
    var eventSource = new Timeline.DefaultEventSource();
@@ -49,6 +59,7 @@ function onLoad() {
          width:          "60%", 
          intervalUnit:   Timeline.DateTime.DAY, 
          intervalPixels: 40,
+         theme:          maintheme
      }),
      Timeline.createBandInfo({
          eventSource:    eventSource,
