@@ -11,7 +11,15 @@ class TimelineHandler(AnonymousBaseHandler):
    def read(self, request):
        events = []
        for event in Event.objects.all():
-           events.append( {"start":event.start.strftime("%a %b %d %Y %H:%M:%S GMT-0000"), "description":event.desc,
+           color = "#6666ff"
+           if event.title.startswith("DEV IR"):
+              color = "#ff3333"
+           elif event.title.startswith("TEST IR"):
+              color = "#cc9900"
+           elif event.title.startswith("LIVE IR"):
+              color = "#33aa33"
+
+           events.append( {"start":event.start.strftime("%a %b %d %Y %H:%M:%S GMT-0000"), "description":event.desc, "color":color,
                            "end":event.end.strftime("%a %b %d %Y %H:%M:%S GMT-0000"), "durationEvent":event.dur, "title":event.title} )
 
        outstr = simplejson.dumps( {"events":events} )
