@@ -4,7 +4,7 @@ from django import forms
 
 
 class EventModelForm( forms.ModelForm ):
-    desc = forms.CharField( widget=forms.Textarea )
+    desc = forms.CharField( label="Description", widget=forms.Textarea, initial=" " )
     class Meta:
         model = Event
 
